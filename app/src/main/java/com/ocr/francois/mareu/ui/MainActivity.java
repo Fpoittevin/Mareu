@@ -1,8 +1,10 @@
-package com.ocr.francois.mareu;
+package com.ocr.francois.mareu.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.ocr.francois.mareu.R;
 
 public class MainActivity extends AppCompatActivity {
 
