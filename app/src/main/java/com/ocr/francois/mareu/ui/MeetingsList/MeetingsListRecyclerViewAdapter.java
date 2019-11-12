@@ -2,7 +2,6 @@ package com.ocr.francois.mareu.ui.MeetingsList;
 
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ocr.francois.mareu.R;
@@ -25,19 +25,26 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
 
     private List<Meeting> meetings;
     private Context context;
-    private FragmentCallback callback;
+    private FragmentCallback fragment;
+    private ActivityCallback activity;
 
-    public MeetingsListRecyclerViewAdapter(List<Meeting> meetings, Context context) {
+    public MeetingsListRecyclerViewAdapter(List<Meeting> meetings, Context context, Fragment fragment) {
         this.meetings = meetings;
         this.context = context;
-        if(context instanceof FragmentCallback) {
-            callback = (FragmentCallback) context;
+        if(context instanceof ActivityCallback) {
+            this.activity = (ActivityCallback) activity;
+        }
+        if(fragment instanceof FragmentCallback) {
+            this.fragment = (FragmentCallback) fragment;
         }
 
     }
 
-    public interface FragmentCallback {
+    public interface ActivityCallback {
         void onItemClick(Meeting item);
+    }
+    public interface FragmentCallback {
+        void onItemDelete(Meeting item);
     }
 
     @NonNull
@@ -75,14 +82,14 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                callback.onItemClick(meeting);
+                activity.onItemClick(meeting);
             }
         });
 
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                fragment.onItemDelete(meeting);
             }
         });
     }

@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.ocr.francois.mareu.R;
@@ -16,10 +17,15 @@ import com.ocr.francois.mareu.ui.MeetingsList.MeetingsListRecyclerViewAdapter;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity implements MeetingsListRecyclerViewAdapter.FragmentCallback {
+import static com.ocr.francois.mareu.service.MeetingsSorter.SortParam.DATETIMESTART;
+import static com.ocr.francois.mareu.service.MeetingsSorter.SortParam.MEETINGROOM;
+
+public class MainActivity extends AppCompatActivity implements MeetingsListRecyclerViewAdapter.ActivityCallback {
 
     @BindView(R.id.activity_main_toolbar)
     Toolbar toolbar;
+
+    MeetingsListFragment meetingsListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
         configureToolBar();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        MeetingsListFragment meetingsListFragment = MeetingsListFragment.newInstance();
+        meetingsListFragment = MeetingsListFragment.newInstance();
         fragmentManager.beginTransaction().add(R.id.activity_main_frame_layout_main, meetingsListFragment).commit();
     }
 
@@ -46,6 +52,21 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_meetings_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (meetingsListFragment.sortParam) {
+            case MEETINGROOM:
+                meetingsListFragment.sortParam = DATETIMESTART;
+                break;
+            case DATETIMESTART:
+                meetingsListFragment.sortParam = MEETINGROOM;
+        }
+
+        meetingsListFragment.sortMeetingsList();
         return true;
     }
 }

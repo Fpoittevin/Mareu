@@ -1,7 +1,5 @@
 package com.ocr.francois.mareu.ui.MeetingsList;
 
-
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -12,12 +10,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.di.DI;
 import com.ocr.francois.mareu.model.Meeting;
 import com.ocr.francois.mareu.service.MeetingApiService;
+import com.ocr.francois.mareu.service.MeetingsSorter;
 
 import java.util.List;
 
@@ -25,14 +23,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MeetingsListFragment extends Fragment {
+public class MeetingsListFragment extends Fragment implements MeetingsListRecyclerViewAdapter.FragmentCallback {
 
     @BindView(R.id.fragment_meetings_list_recycler_view)
     RecyclerView recyclerView;
 
     private List<Meeting> meetings;
     private MeetingApiService meetingApiService;
-    private Activity activity;
+    private MeetingsListRecyclerViewAdapter meetingsListRecyclerViewAdapter;
+    public MeetingsSorter.SortParam sortParam;
 
     public MeetingsListFragment() { }
 
@@ -46,6 +45,7 @@ public class MeetingsListFragment extends Fragment {
 
         meetingApiService = DI.getMeetingApiService();
         meetings = meetingApiService.getMeetings();
+        sortParam = MeetingsSorter.SortParam.MEETINGROOM;
     }
 
     @Override
@@ -62,6 +62,27 @@ public class MeetingsListFragment extends Fragment {
 
     private void configureRecyclerView() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new MeetingsListRecyclerViewAdapter(meetings, getContext()));
+
+        meetingsListRecyclerViewAdapter = new MeetingsListRecyclerViewAdapter(meetings, getContext(), this);
+        recyclerView.setAdapter(meetingsListRecyclerViewAdapter);
+    }
+
+    public void generateMeetingsList() {
+        meetings = meetingApiService.getMeetings();
+    }
+
+    public void sortMeetingsList() {
+        MeetingsSorter.sortMeetings(meetings, sortParam);
+        updateMeetingsList();
+    }
+
+    public void updateMeetingsList() {
+        meetingsListRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onItemDelete(Meeting meeting) {
+        meetingApiService.deleteMeeting(meeting);
+        meetingsListRecyclerViewAdapter.notifyDataSetChanged();
     }
 }

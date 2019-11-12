@@ -1,6 +1,7 @@
 package com.ocr.francois.mareu.model;
 
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 import org.joda.time.LocalTime;
 
 import java.util.List;
@@ -13,6 +14,7 @@ public class Meeting {
     private LocalDate date;
     private LocalTime timeStart;
     private LocalTime timeStop;
+    private LocalDateTime dateTimeStart;
 
     public Meeting(int id, String subject, MeetingRoom meetingRoom, List<String> participants, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
         this.id = id;
@@ -22,6 +24,8 @@ public class Meeting {
         this.date = date;
         this.timeStart = timeStart;
         this.timeStop = timeStop;
+
+        setDateTimeStart();
     }
 
     public int getId() {
@@ -78,5 +82,19 @@ public class Meeting {
 
     public void setTimeStop(LocalTime timeStop) {
         this.timeStop = timeStop;
+    }
+
+    public void setDateTimeStart() {
+        dateTimeStart = new LocalDateTime(
+                date.getYear(),
+                date.getMonthOfYear(),
+                date.getDayOfMonth(),
+                timeStart.getHourOfDay(),
+                timeStart.getMinuteOfHour()
+        );
+    }
+
+    public LocalDateTime getDateTimeStart() {
+        return dateTimeStart;
     }
 }
