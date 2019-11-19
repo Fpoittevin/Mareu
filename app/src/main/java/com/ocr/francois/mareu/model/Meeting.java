@@ -24,8 +24,23 @@ public class Meeting {
         this.date = date;
         this.timeStart = timeStart;
         this.timeStop = timeStop;
+    }
 
-        setDateTimeStart();
+    public Meeting(String subject, MeetingRoom meetingRoom, List<String> participants, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
+        this.subject = subject;
+        this.meetingRoom = meetingRoom;
+        this.participants = participants;
+        this.date = date;
+        this.timeStart = timeStart;
+        this.timeStop = timeStop;
+    }
+
+    public Meeting(String subject, List<String> participants, LocalDate date, LocalTime timeStart, LocalTime timeStop) {
+        this.subject = subject;
+        this.participants = participants;
+        this.date = date;
+        this.timeStart = timeStart;
+        this.timeStop = timeStop;
     }
 
     public int getId() {
@@ -95,6 +110,9 @@ public class Meeting {
     }
 
     public LocalDateTime getDateTimeStart() {
+        if(this.dateTimeStart == null) {
+            setDateTimeStart();
+        }
         return dateTimeStart;
     }
 }

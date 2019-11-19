@@ -28,23 +28,23 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
     private FragmentCallback fragment;
     private ActivityCallback activity;
 
-    public MeetingsListRecyclerViewAdapter(List<Meeting> meetings, Context context, Fragment fragment) {
-        this.meetings = meetings;
-        this.context = context;
-        if(context instanceof ActivityCallback) {
-            this.activity = (ActivityCallback) activity;
-        }
-        if(fragment instanceof FragmentCallback) {
-            this.fragment = (FragmentCallback) fragment;
-        }
-
-    }
-
     public interface ActivityCallback {
         void onItemClick(Meeting item);
     }
     public interface FragmentCallback {
         void onItemDelete(Meeting item);
+    }
+
+    public MeetingsListRecyclerViewAdapter(List<Meeting> meetings, Context context, Fragment fragment) {
+        this.meetings = meetings;
+        this.context = context;
+        if(context instanceof ActivityCallback) {
+            this.activity = (ActivityCallback) context;
+        }
+        if(fragment instanceof FragmentCallback) {
+            this.fragment = (FragmentCallback) fragment;
+        }
+
     }
 
     @NonNull

@@ -4,13 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.FragmentManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.model.Meeting;
+import com.ocr.francois.mareu.ui.MeetingCreation.MeetingCreationActivity;
+import com.ocr.francois.mareu.ui.MeetingDetails.MeetingDetailsActivity;
+import com.ocr.francois.mareu.ui.MeetingDetails.MeetingDetailsFragment;
 import com.ocr.francois.mareu.ui.MeetingsList.MeetingsListFragment;
 import com.ocr.francois.mareu.ui.MeetingsList.MeetingsListRecyclerViewAdapter;
 
@@ -24,8 +30,12 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
 
     @BindView(R.id.activity_main_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.activity_main_creation_fab)
+    FloatingActionButton creationFab;
 
     MeetingsListFragment meetingsListFragment;
+    MeetingDetailsFragment meetingDetailsFragment;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +43,40 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
-
         configureToolBar();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         meetingsListFragment = MeetingsListFragment.newInstance();
         fragmentManager.beginTransaction().add(R.id.activity_main_frame_layout_main, meetingsListFragment).commit();
+
+        creationFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent meetingCreationIntent = new Intent(MainActivity.this, MeetingCreationActivity.class);
+                startActivity(meetingCreationIntent);
+            }
+        });
     }
 
     @Override
     public void onItemClick(Meeting meeting) {
-        Toast.makeText(this, meeting.getSubject(), Toast.LENGTH_LONG).show();
+
+
+        if(findViewById(R.id.activity_main_details_frame) == null) {
+            Intent meetingDetailsIntent = new Intent(MainActivity.this, MeetingDetailsActivity.class);
+            meetingDetailsIntent.putExtra("meetingId", meeting.getId());
+            startActivity(meetingDetailsIntent);
+        } else {
+            if(findViewById(R.id.activity_main_selection_layout) != null){
+                findViewById(R.id.activity_main_selection_layout).setVisibility(View.GONE);
+            }
+            meetingDetailsFragment = MeetingDetailsFragment.newInstance();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("meetingId", meeting.getId());
+            meetingDetailsFragment.setArguments(bundle);
+            fragmentManager.beginTransaction().replace(R.id.activity_main_details_frame, meetingDetailsFragment).commit();
+        }
     }
 
     private void configureToolBar() {
@@ -66,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
                 meetingsListFragment.sortParam = MEETINGROOM;
         }
 
-        meetingsListFragment.sortMeetingsList();
+        meetingsListFragment.updateMeetingsList();
         return true;
     }
 }

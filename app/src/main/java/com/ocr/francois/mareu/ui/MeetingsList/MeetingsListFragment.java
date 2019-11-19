@@ -13,9 +13,13 @@ import android.view.ViewGroup;
 
 import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.di.DI;
+import com.ocr.francois.mareu.event.NewMeetingEvent;
 import com.ocr.francois.mareu.model.Meeting;
 import com.ocr.francois.mareu.service.MeetingApiService;
 import com.ocr.francois.mareu.service.MeetingsSorter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
@@ -71,12 +75,8 @@ public class MeetingsListFragment extends Fragment implements MeetingsListRecycl
         meetings = meetingApiService.getMeetings();
     }
 
-    public void sortMeetingsList() {
-        MeetingsSorter.sortMeetings(meetings, sortParam);
-        updateMeetingsList();
-    }
-
     public void updateMeetingsList() {
+        MeetingsSorter.sortMeetings(meetings, sortParam);
         meetingsListRecyclerViewAdapter.notifyDataSetChanged();
     }
 
@@ -84,5 +84,22 @@ public class MeetingsListFragment extends Fragment implements MeetingsListRecycl
     public void onItemDelete(Meeting meeting) {
         meetingApiService.deleteMeeting(meeting);
         meetingsListRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onCreateMeeting(NewMeetingEvent event) {
+        updateMeetingsList();
     }
 }
