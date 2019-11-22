@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.MeetingDetails.MeetingDetailsFragment">
+    tools:context=".ui.MeetingDetails.MeetingDetailsFragment"
+    android:id="@+id/fragment_meeting_details">
 
 
 

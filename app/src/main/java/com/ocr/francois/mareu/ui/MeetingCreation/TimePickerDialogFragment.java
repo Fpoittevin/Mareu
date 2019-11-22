@@ -1,138 +1,95 @@
 package com.ocr.francois.mareu.ui.MeetingCreation;
 
-
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.Button;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.ocr.francois.mareu.R;
+import com.ocr.francois.mareu.event.TimeChangeEvent;
 
+import org.greenrobot.eventbus.EventBus;
 import org.joda.time.LocalTime;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class TimePickerDialogFragment extends DialogFragment {
+public class TimePickerDialogFragment extends DialogFragment implements TimePickerFragment.
+        TimeChangeListener {
 
-    @BindView(R.id.fragment_time_picker_dialog_time_picker)
-    public TimePicker timePicker;
+    @BindView(R.id.fragment_time_picker_dialog_view_pager)
+    ViewPager viewPager;
     @BindView(R.id.fragment_time_picker_dialog_tab_layout)
-    public TabLayout tabLayout;
+    TabLayout tabLayout;
+    @BindView(R.id.fragment_time_picker_save_button)
+    FloatingActionButton saveButton;
 
-    public LocalTime timeStart;
-    public LocalTime timeStop;
-    private Moment momentSelected;
-    TimePickerDialogListener listener;
+    private LocalTime timeStart;
+    private LocalTime timeStop;
+    private TimesSavedListener timesSavedListener;
 
-    public interface TimePickerDialogListener {
-        void onTimePickerDialogPositiveClick(LocalTime timeStart, LocalTime timeStop);
+
+    public interface TimesSavedListener {
+        void onTimesSaved(LocalTime timeStart, LocalTime timeStop);
     }
-    private enum Moment{START, STOP}
 
-    public TimePickerDialogFragment(Fragment parent, LocalTime timeStart, LocalTime timeStop) {
+    public TimePickerDialogFragment(LocalTime timeStart, LocalTime timeStop, TimesSavedListener timesSavedListener){
         this.timeStart = timeStart;
         this.timeStop = timeStop;
-
-        if(parent instanceof TimePickerDialogListener) {
-            listener = (TimePickerDialogListener) parent;
-        }
+        this.timesSavedListener = timesSavedListener;
     }
 
-
-    @NonNull
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton("save", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                listener.onTimePickerDialogPositiveClick(timeStart, timeStop);
-            }
-        });
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_time_picker_dialog, null);
-        builder.setView(view);
         ButterKnife.bind(this, view);
+        configureViewPager();
 
-        configureTimePicker();
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                if(tab.getPosition() == 0){
-                    momentSelected = Moment.START;
-                    timePicker.setCurrentHour(timeStart.getHourOfDay());
-                    timePicker.setCurrentMinute(timeStart.getMinuteOfHour());
-                }else{
-                    momentSelected = Moment.STOP;
-                    timePicker.setCurrentHour(timeStop.getHourOfDay());
-                    timePicker.setCurrentMinute(timeStop.getMinuteOfHour());
-                }
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                if(tab.getPosition() == 0){
-                    momentSelected = Moment.START;
-                    timePicker.setCurrentHour(timeStart.getHourOfDay());
-                    timePicker.setCurrentMinute(timeStart.getMinuteOfHour());
-                }else{
-                    momentSelected = Moment.STOP;
-                    timePicker.setCurrentHour(timeStop.getHourOfDay());
-                    timePicker.setCurrentMinute(timeStop.getMinuteOfHour());
-                }
+            public void onClick(View view) {
+                timesSavedListener.onTimesSaved(timeStart,timeStop);
+                dismiss();
             }
         });
-
-        return builder.create();
+        return view;
     }
 
-    private void configureTimePicker() {
-        timePicker.setIs24HourView(true);
-        timePicker.setCurrentHour(timeStart.getHourOfDay());
-        timePicker.setCurrentMinute(timeStart.getMinuteOfHour());
-        momentSelected = Moment.START;
+    private void configureViewPager() {
 
-        timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
-            @Override
-            public void onTimeChanged(TimePicker timePicker, int hour, int minute) {
-                LocalTime timeSelected = new LocalTime(hour, minute);
-                switch (momentSelected) {
-                    case START:
-                        timeStart = timeSelected;
-                        if(timeStop.isBefore(timeStart)){
-                            timeStop = timeStart.plusMinutes(45);
-                        }
-                        break;
-                    case STOP:
-                        timeStop = timeSelected;
-                        if(timeStart.isAfter(timeStop)){
-                            timeStart = timeStop.minusMinutes(45);
-                        }
+        viewPager.setAdapter(new TimePickerDialogPagerAdapter(getChildFragmentManager(), timeStart, timeStop, this));
+        tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.getTabAt(0).setIcon(R.drawable.ic_access_time_black_24dp);
+        tabLayout.getTabAt(1).setIcon(R.drawable.ic_access_time_black_24dp);
+    }
+
+    @Override
+    public void onTimeChange(LocalTime time, TimePickerFragment.Moment moment) {
+        switch (moment){
+            case START:
+                timeStart = time;
+                if(timeStart.isAfter(timeStop)) {
+                    timeStop = timeStart.plusMinutes(45);
                 }
-            }
-        });
+                break;
+            case STOP:
+                timeStop = time;
+                if (timeStop.isBefore(timeStart)) {
+                    timeStart = timeStop.minusMinutes(45);
+                }
+                break;
+        }
+        EventBus.getDefault().post(new TimeChangeEvent(timeStart,timeStop));
     }
 }

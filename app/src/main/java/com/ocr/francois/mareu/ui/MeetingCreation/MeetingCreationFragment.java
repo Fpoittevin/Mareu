@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -38,7 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MeetingCreationFragment extends Fragment implements TimePickerDialogFragment.TimePickerDialogListener {
+public class MeetingCreationFragment extends Fragment implements TimePickerDialogFragment.TimesSavedListener {
 
     private Meeting meeting;
     private MeetingApiService meetingApiService;
@@ -113,7 +114,7 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
     }
 
     private void configureTimesButton() {
-        final TimePickerDialogFragment timesPicker = new TimePickerDialogFragment(this, meeting.getTimeStart(), meeting.getTimeStop());
+        final TimePickerDialogFragment timesPicker = new TimePickerDialogFragment(meeting.getTimeStart(), meeting.getTimeStop(), this);
 
         timesButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +122,13 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
                 timesPicker.show(getFragmentManager(), "timePicker");
             }
         });
+    }
+
+    @Override
+    public void onTimesSaved(LocalTime timeStart, LocalTime timeStop) {
+        meeting.setTimeStart(timeStart);
+        meeting.setTimeStop(timeStop);
+        displayDateAndTime();
     }
 
     private void configureDateButton() {
@@ -203,13 +211,6 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
         participantsRecyclerView.setAdapter(participantsRecyclerViewAdapter);
     }
 
-    @Override
-    public void onTimePickerDialogPositiveClick(LocalTime timeStart, LocalTime timeStop) {
-        meeting.setTimeStart(timeStart);
-        meeting.setTimeStop(timeStop);
-        displayDateAndTime();
-        getAndDisplayFreeMeetingRooms();
-    }
 
     public void saveMeeting() {
         Boolean error = false;

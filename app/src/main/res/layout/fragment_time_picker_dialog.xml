@@ -1,32 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".ui.MeetingCreation.TimePickerDialogFragment">
-
+    android:id="@+id/linear"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_white_24dp"
+        android:id="@+id/fragment_time_picker_save_button"/>
     <com.google.android.material.tabs.TabLayout
-        android:id="@+id/fragment_time_picker_dialog_tab_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_access_time_black_24dp"
-            android:text="time start"/>
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:icon="@drawable/ic_access_time_black_24dp"
-            android:text="time stop"/>
-
-    </com.google.android.material.tabs.TabLayout>
-
-    <TimePicker
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/fragment_time_picker_dialog_time_picker"/>
+        android:id="@+id/fragment_time_picker_dialog_tab_layout"/>
 
+    <com.ocr.francois.mareu.ui.utils.WrapContentHeightViewPager
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/fragment_time_picker_dialog_view_pager">
+    </com.ocr.francois.mareu.ui.utils.WrapContentHeightViewPager>
 </LinearLayout>
