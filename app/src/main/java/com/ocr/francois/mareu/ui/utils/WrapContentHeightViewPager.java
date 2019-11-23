@@ -9,6 +9,8 @@ import androidx.viewpager.widget.ViewPager;
 
 public class WrapContentHeightViewPager extends ViewPager {
 
+    private View currentView;
+
     public WrapContentHeightViewPager(Context context) {
         super(context);
     }
@@ -18,18 +20,23 @@ public class WrapContentHeightViewPager extends ViewPager {
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-
-        int height = 0;
-        for(int i = 0; i < getChildCount(); i++) {
-            View child = getChildAt(i);
-            child.measure(widthMeasureSpec, View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-            int h = child.getMeasuredHeight();
-            if(h > height) height = h;
+    public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        if (currentView == null) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            return;
         }
-
-        heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height, View.MeasureSpec.EXACTLY);
+        int height = 0;
+        currentView.measure(widthMeasureSpec, MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+        int h = currentView.getMeasuredHeight();
+        if (h > height) height = h;
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY);
 
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+
+    public void measureCurrentView(View view) {
+        currentView = view;
+        requestLayout();
     }
 }

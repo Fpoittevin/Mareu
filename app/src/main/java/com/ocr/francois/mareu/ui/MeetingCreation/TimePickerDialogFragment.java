@@ -1,15 +1,12 @@
 package com.ocr.francois.mareu.ui.MeetingCreation;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
+import androidx.fragment.app.DialogFragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
@@ -30,8 +27,8 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     ViewPager viewPager;
     @BindView(R.id.fragment_time_picker_dialog_tab_layout)
     TabLayout tabLayout;
-    @BindView(R.id.fragment_time_picker_save_button)
-    FloatingActionButton saveButton;
+   /* @BindView(R.id.fragment_time_picker_save_button)
+    FloatingActionButton saveButton;*/
 
     private LocalTime timeStart;
     private LocalTime timeStop;
@@ -42,7 +39,7 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         void onTimesSaved(LocalTime timeStart, LocalTime timeStop);
     }
 
-    public TimePickerDialogFragment(LocalTime timeStart, LocalTime timeStop, TimesSavedListener timesSavedListener){
+    public TimePickerDialogFragment(LocalTime timeStart, LocalTime timeStop, TimesSavedListener timesSavedListener) {
         this.timeStart = timeStart;
         this.timeStop = timeStop;
         this.timesSavedListener = timesSavedListener;
@@ -55,13 +52,13 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         ButterKnife.bind(this, view);
         configureViewPager();
 
-        saveButton.setOnClickListener(new View.OnClickListener() {
+        /*saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timesSavedListener.onTimesSaved(timeStart,timeStop);
+                timesSavedListener.onTimesSaved(timeStart, timeStop);
                 dismiss();
             }
-        });
+        });*/
         return view;
     }
 
@@ -76,10 +73,10 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
 
     @Override
     public void onTimeChange(LocalTime time, TimePickerFragment.Moment moment) {
-        switch (moment){
+        switch (moment) {
             case START:
                 timeStart = time;
-                if(timeStart.isAfter(timeStop)) {
+                if (timeStart.isAfter(timeStop)) {
                     timeStop = timeStart.plusMinutes(45);
                 }
                 break;
@@ -90,6 +87,6 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
                 }
                 break;
         }
-        EventBus.getDefault().post(new TimeChangeEvent(timeStart,timeStop));
+        EventBus.getDefault().post(new TimeChangeEvent(timeStart, timeStop));
     }
 }

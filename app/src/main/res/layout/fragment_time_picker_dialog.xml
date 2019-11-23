@@ -4,19 +4,25 @@
     android:orientation="vertical"
     android:id="@+id/linear"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_add_white_24dp"
-        android:id="@+id/fragment_time_picker_save_button"/>
+        android:id="@+id/fragment_time_picker_save_button"/>-->
     <com.google.android.material.tabs.TabLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_time_picker_dialog_tab_layout"/>
 
     <com.ocr.francois.mareu.ui.utils.WrapContentHeightViewPager
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_width="wrap_content"
         android:id="@+id/fragment_time_picker_dialog_view_pager">
     </com.ocr.francois.mareu.ui.utils.WrapContentHeightViewPager>
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ok"
+        android:layout_gravity="right"
+        style="@style/Widget.MaterialComponents.Button.TextButton"/>
 </LinearLayout>

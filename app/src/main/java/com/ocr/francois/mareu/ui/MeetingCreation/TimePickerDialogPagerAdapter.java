@@ -1,10 +1,14 @@
 package com.ocr.francois.mareu.ui.MeetingCreation;
 
 
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
+import com.ocr.francois.mareu.ui.utils.WrapContentHeightViewPager;
 
 import org.joda.time.LocalTime;
 
@@ -12,6 +16,7 @@ public class TimePickerDialogPagerAdapter extends FragmentPagerAdapter {
 
     private LocalTime timeStart;
     private LocalTime timeStop;
+    private int currentPosition = -1;
     public TimePickerFragment.TimeChangeListener timeChangeListener;
 
     public TimePickerDialogPagerAdapter(FragmentManager fragmentManager, LocalTime timeStart, LocalTime timeStop, TimePickerFragment.TimeChangeListener timeChangeListener) {
@@ -57,5 +62,18 @@ public class TimePickerDialogPagerAdapter extends FragmentPagerAdapter {
                 break;
         }
         return title;
+    }
+
+    @Override
+    public void setPrimaryItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+
+        if (position != currentPosition) {
+            Fragment fragment = (Fragment) object;
+            WrapContentHeightViewPager pager = (WrapContentHeightViewPager) container;
+            if (fragment != null && fragment.getView() != null) {
+                currentPosition = position;
+                pager.measureCurrentView(fragment.getView());
+            }
+        }
     }
 }

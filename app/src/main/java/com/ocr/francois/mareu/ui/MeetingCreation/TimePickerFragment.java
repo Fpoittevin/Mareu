@@ -2,13 +2,12 @@ package com.ocr.francois.mareu.ui.MeetingCreation;
 
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
+
+import androidx.fragment.app.Fragment;
 
 import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.event.TimeChangeEvent;
@@ -32,7 +31,7 @@ public class TimePickerFragment extends Fragment {
     public LocalTime time;
     public TimeChangeListener timeChangeListener;
 
-    public enum Moment{START,STOP}
+    public enum Moment {START, STOP}
 
     public TimePickerFragment(TimeChangeListener timeChangeListener) {
         this.timeChangeListener = timeChangeListener;
@@ -53,6 +52,8 @@ public class TimePickerFragment extends Fragment {
 
         return fragment;
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
