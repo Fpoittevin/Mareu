@@ -224,7 +224,7 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
         }
 
         if(!error) {
-            EventBus.getDefault().post(new NewMeetingEvent(meeting));
+            EventBus.getDefault().postSticky(new NewMeetingEvent(meeting));
             getActivity().finish();
         }
     }

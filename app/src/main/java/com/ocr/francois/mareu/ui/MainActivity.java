@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
     @BindView(R.id.activity_main_creation_fab)
     FloatingActionButton creationFab;
 
-    MeetingsListFragment meetingsListFragment;
+    public MeetingsListFragment meetingsListFragment;
     MeetingDetailsFragment meetingDetailsFragment;
     FragmentManager fragmentManager;
 

@@ -116,4 +116,8 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
             ButterKnife.bind(this, itemView);
         }
     }
+
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
 }

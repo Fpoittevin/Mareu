@@ -24,5 +24,6 @@
         android:layout_height="wrap_content"
         android:text="ok"
         android:layout_gravity="right"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:id="@+id/fragment_time_picker_save_button"/>
 </LinearLayout>

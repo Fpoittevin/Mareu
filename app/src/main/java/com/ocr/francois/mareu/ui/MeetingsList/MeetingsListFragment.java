@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.di.DI;
@@ -20,6 +21,7 @@ import com.ocr.francois.mareu.service.MeetingsSorter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
@@ -98,7 +100,7 @@ public class MeetingsListFragment extends Fragment implements MeetingsListRecycl
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onCreateMeeting(NewMeetingEvent event) {
         updateMeetingsList();
     }

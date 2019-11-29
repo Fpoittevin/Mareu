@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.fragment.app.DialogFragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 import com.ocr.francois.mareu.R;
@@ -29,6 +30,8 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     TabLayout tabLayout;
    /* @BindView(R.id.fragment_time_picker_save_button)
     FloatingActionButton saveButton;*/
+    @BindView(R.id.fragment_time_picker_save_button)
+    MaterialButton saveButton;
 
     private LocalTime timeStart;
     private LocalTime timeStop;
@@ -52,13 +55,13 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         ButterKnife.bind(this, view);
         configureViewPager();
 
-        /*saveButton.setOnClickListener(new View.OnClickListener() {
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 timesSavedListener.onTimesSaved(timeStart, timeStop);
                 dismiss();
             }
-        });*/
+        });
         return view;
     }
 
