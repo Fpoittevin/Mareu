@@ -1,12 +1,8 @@
 package com.ocr.francois.mareu.ui.MeetingCreation;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
-
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Patterns;
@@ -17,6 +13,11 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TimePicker;
+
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -39,20 +40,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MeetingCreationFragment extends Fragment implements TimePickerDialogFragment.TimesSavedListener {
-
-    private Meeting meeting;
-    private MeetingApiService meetingApiService;
-    private ArrayAdapter meetingRoomArrayAdapter;
-    private List<MeetingRoom> freeMeetingRooms;
-    private ParticipantsRecyclerViewAdapter participantsRecyclerViewAdapter;
+public class MeetingCreationFragment extends Fragment {
 
     @BindView(R.id.fragment_meeting_creation_subject_edit_text)
     TextInputEditText subjectEditText;
     @BindView(R.id.fragment_meeting_creation_date_button)
     MaterialButton dateButton;
-    @BindView(R.id.fragment_meeting_creation_times_button)
-    MaterialButton timesButton;
+    @BindView(R.id.fragment_meeting_creation_time_start_button)
+    MaterialButton timeStartButton;
+    @BindView(R.id.fragment_meeting_creation_time_stop_button)
+    MaterialButton timeStopButton;
     @BindView(R.id.fragment_meeting_creation_meeting_room_spinner)
     Spinner meetingRoomSpinner;
     @BindView(R.id.fragment_meeting_creation_add_participant_edit_text)
@@ -61,6 +58,12 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
     MaterialButton addParticipantButton;
     @BindView(R.id.fragment_meeting_creation_participants_recycler_view)
     RecyclerView participantsRecyclerView;
+    MyTimePickerDialog timePickerDialog;
+    private Meeting meeting;
+    private MeetingApiService meetingApiService;
+    private ArrayAdapter meetingRoomArrayAdapter;
+    private List<MeetingRoom> freeMeetingRooms;
+    private ParticipantsRecyclerViewAdapter participantsRecyclerViewAdapter;
 
     public static MeetingCreationFragment newInstance() {
         return new MeetingCreationFragment();
@@ -83,7 +86,7 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
 
         configureSubjectEditText();
         configureDateButton();
-        configureTimesButton();
+        configureTimesButtonAndTimePicker();
         configureMeetingRoomSpinner();
         configureParticipantsRecyclerView();
         configureAddParticipantEditText();
@@ -93,18 +96,23 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
 
     private void displayDateAndTime() {
         dateButton.setText(meeting.getDate().toString(getString(R.string.date_pattern)));
-        timesButton.setText(meeting.getTimeStart().toString(getString(R.string.time_pattern) + " - " + meeting.getTimeStop().toString(getString(R.string.time_pattern))));
+        timeStartButton.setText(meeting.getTimeStart().toString(getString(R.string.time_pattern)));
+        timeStopButton.setText(meeting.getTimeStop().toString(getString(R.string.time_pattern)));
     }
 
     private void configureSubjectEditText() {
         subjectEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
             @Override
             public void afterTextChanged(Editable subject) {
-                if(subject.toString().length() == 0) {
+                if (subject.toString().length() == 0) {
                     subjectEditText.setError("veuillez indiquer le sujet de la réunion");
                 } else {
                     meeting.setSubject(subject.toString());
@@ -113,22 +121,55 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
         });
     }
 
-    private void configureTimesButton() {
-        final TimePickerDialogFragment timesPicker = new TimePickerDialogFragment(meeting.getTimeStart(), meeting.getTimeStop(), this);
+    private void configureTimesButtonAndTimePicker() {
+        timePickerDialog = new MyTimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int minute) {
+                switch (timePickerDialog.getMoment()) {
+                    case START:
+                        meeting.setTimeStart(new LocalTime(hour, minute));
+                        if (meeting.getTimeStart().isAfter(meeting.getTimeStop())) {
+                            meeting.setTimeStop(meeting.getTimeStart().plusMinutes(45));
+                        }
+                        break;
+                    case STOP:
+                        meeting.setTimeStop(new LocalTime(hour, minute));
+                        if (meeting.getTimeStop().isBefore(meeting.getTimeStart())) {
+                            meeting.setTimeStart(meeting.getTimeStop().minusMinutes(45));
+                        }
+                        break;
+                }
+                displayDateAndTime();
+            }
+        }, meeting.getTimeStart().getHourOfDay(), meeting.getTimeStart().getMinuteOfHour(), true, MyTimePickerDialog.Moment.START);
 
-        timesButton.setOnClickListener(new View.OnClickListener() {
+        timeStartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timesPicker.show(getFragmentManager(), "timePicker");
+                initTimePickerDialog(MyTimePickerDialog.Moment.START);
+            }
+        });
+        timeStopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                initTimePickerDialog(MyTimePickerDialog.Moment.STOP);
             }
         });
     }
 
-    @Override
-    public void onTimesSaved(LocalTime timeStart, LocalTime timeStop) {
-        meeting.setTimeStart(timeStart);
-        meeting.setTimeStop(timeStop);
-        displayDateAndTime();
+    private void initTimePickerDialog(MyTimePickerDialog.Moment moment) {
+        timePickerDialog.setMoment(moment);
+        switch (moment) {
+            case START:
+                timePickerDialog.setTitle("début");
+                timePickerDialog.updateTime(meeting.getTimeStart().getHourOfDay(), meeting.getTimeStart().getMinuteOfHour());
+                break;
+            case STOP:
+                timePickerDialog.setTitle("fin");
+                timePickerDialog.updateTime(meeting.getTimeStop().getHourOfDay(), meeting.getTimeStop().getMinuteOfHour());
+                break;
+        }
+        timePickerDialog.show();
     }
 
     private void configureDateButton() {
@@ -141,7 +182,7 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 //meeting.setDate(new LocalDate(year, month, day));
                 Calendar cal = Calendar.getInstance();
-                cal.set(year,month,day);
+                cal.set(year, month, day);
                 meeting.setDate(new LocalDate(cal.getTime()));
                 displayDateAndTime();
                 getAndDisplayFreeMeetingRooms();
@@ -163,6 +204,7 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
         meetingRoomArrayAdapter.addAll(freeMeetingRooms);
         meetingRoomSpinner.setAdapter(meetingRoomArrayAdapter);
     }
+
     private void configureMeetingRoomSpinner() {
         meetingRoomArrayAdapter = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_item);
         getAndDisplayFreeMeetingRooms();
@@ -183,7 +225,8 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
         addParticipantButton.setEnabled(false);
         addParticipantEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int i, int i1, int i2) {
@@ -191,7 +234,8 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
             }
 
             @Override
-            public void afterTextChanged(Editable editable) { }
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         addParticipantButton.setOnClickListener(new View.OnClickListener() {
@@ -211,19 +255,18 @@ public class MeetingCreationFragment extends Fragment implements TimePickerDialo
         participantsRecyclerView.setAdapter(participantsRecyclerViewAdapter);
     }
 
-
     public void saveMeeting() {
         Boolean error = false;
-        if(meeting.getSubject().equals("")){
+        if (meeting.getSubject().equals("")) {
             error = true;
             subjectEditText.setError("Veuillez indiquer le sujet de la réunion");
         }
-        if(meeting.getParticipants().isEmpty()) {
+        if (meeting.getParticipants().isEmpty()) {
             error = true;
             addParticipantEditText.setError("Veuillez indiquer au moins un participant");
         }
 
-        if(!error) {
+        if (!error) {
             EventBus.getDefault().postSticky(new NewMeetingEvent(meeting));
             getActivity().finish();
         }

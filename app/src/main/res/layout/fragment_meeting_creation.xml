@@ -60,11 +60,18 @@
                         app:icon="@drawable/ic_date_range_black_24dp" />
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/fragment_meeting_creation_times_button"
+                        android:id="@+id/fragment_meeting_creation_time_start_button"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="heure de début"
+                        app:icon="@drawable/ic_access_time_black_24dp" />
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/fragment_meeting_creation_time_stop_button"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="heure de fin"
                         app:icon="@drawable/ic_access_time_black_24dp" />
                 </LinearLayout>
 
