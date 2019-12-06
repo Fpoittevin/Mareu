@@ -58,14 +58,14 @@ public class MeetingCreationFragment extends Fragment {
     MaterialButton addParticipantButton;
     @BindView(R.id.fragment_meeting_creation_participants_recycler_view)
     RecyclerView participantsRecyclerView;
-    MyTimePickerDialog timePickerDialog;
+    private MyTimePickerDialog timePickerDialog;
     private Meeting meeting;
     private MeetingApiService meetingApiService;
     private ArrayAdapter meetingRoomArrayAdapter;
     private List<MeetingRoom> freeMeetingRooms;
     private ParticipantsRecyclerViewAdapter participantsRecyclerViewAdapter;
 
-    public static MeetingCreationFragment newInstance() {
+    static MeetingCreationFragment newInstance() {
         return new MeetingCreationFragment();
     }
 
@@ -82,22 +82,18 @@ public class MeetingCreationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_meeting_creation, container, false);
         ButterKnife.bind(this, view);
-        displayDateAndTime();
+        dateButton.setText(meeting.getDate().toString(getString(R.string.date_pattern)));
+        timeStartButton.setText(meeting.getTimeStart().toString(getString(R.string.time_pattern)));
+        timeStopButton.setText(meeting.getTimeStop().toString(getString(R.string.time_pattern)));
 
         configureSubjectEditText();
         configureDateButton();
-        configureTimesButtonAndTimePicker();
+        configureTimesButtonsAndTimePicker();
         configureMeetingRoomSpinner();
         configureParticipantsRecyclerView();
         configureAddParticipantEditText();
 
         return view;
-    }
-
-    private void displayDateAndTime() {
-        dateButton.setText(meeting.getDate().toString(getString(R.string.date_pattern)));
-        timeStartButton.setText(meeting.getTimeStart().toString(getString(R.string.time_pattern)));
-        timeStopButton.setText(meeting.getTimeStop().toString(getString(R.string.time_pattern)));
     }
 
     private void configureSubjectEditText() {
@@ -113,7 +109,7 @@ public class MeetingCreationFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable subject) {
                 if (subject.toString().length() == 0) {
-                    subjectEditText.setError("veuillez indiquer le sujet de la réunion");
+                    subjectEditText.setError(getString(R.string.error_subject_text_input));
                 } else {
                     meeting.setSubject(subject.toString());
                 }
@@ -121,7 +117,7 @@ public class MeetingCreationFragment extends Fragment {
         });
     }
 
-    private void configureTimesButtonAndTimePicker() {
+    private void configureTimesButtonsAndTimePicker() {
         timePickerDialog = new MyTimePickerDialog(getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int minute) {
@@ -139,7 +135,8 @@ public class MeetingCreationFragment extends Fragment {
                         }
                         break;
                 }
-                displayDateAndTime();
+                timeStartButton.setText(meeting.getTimeStart().toString(getString(R.string.time_pattern)));
+                timeStopButton.setText(meeting.getTimeStop().toString(getString(R.string.time_pattern)));
             }
         }, meeting.getTimeStart().getHourOfDay(), meeting.getTimeStart().getMinuteOfHour(), true, MyTimePickerDialog.Moment.START);
 
@@ -161,11 +158,9 @@ public class MeetingCreationFragment extends Fragment {
         timePickerDialog.setMoment(moment);
         switch (moment) {
             case START:
-                timePickerDialog.setTitle("début");
                 timePickerDialog.updateTime(meeting.getTimeStart().getHourOfDay(), meeting.getTimeStart().getMinuteOfHour());
                 break;
             case STOP:
-                timePickerDialog.setTitle("fin");
                 timePickerDialog.updateTime(meeting.getTimeStop().getHourOfDay(), meeting.getTimeStop().getMinuteOfHour());
                 break;
         }
@@ -180,11 +175,8 @@ public class MeetingCreationFragment extends Fragment {
         final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                //meeting.setDate(new LocalDate(year, month, day));
-                Calendar cal = Calendar.getInstance();
-                cal.set(year, month, day);
-                meeting.setDate(new LocalDate(cal.getTime()));
-                displayDateAndTime();
+                meeting.setDate(new LocalDate(year, month, day));
+                dateButton.setText(meeting.getDate().toString(getString(R.string.date_pattern)));
                 getAndDisplayFreeMeetingRooms();
             }
         }, meeting.getDate().getYear(), meeting.getDate().getMonthOfYear() - 1, meeting.getDate().getDayOfMonth());
@@ -255,15 +247,15 @@ public class MeetingCreationFragment extends Fragment {
         participantsRecyclerView.setAdapter(participantsRecyclerViewAdapter);
     }
 
-    public void saveMeeting() {
-        Boolean error = false;
+    void saveMeeting() {
+        boolean error = false;
         if (meeting.getSubject().equals("")) {
             error = true;
-            subjectEditText.setError("Veuillez indiquer le sujet de la réunion");
+            subjectEditText.setError(getString(R.string.error_subject_text_input));
         }
         if (meeting.getParticipants().isEmpty()) {
             error = true;
-            addParticipantEditText.setError("Veuillez indiquer au moins un participant");
+            addParticipantEditText.setError(getString(R.string.error_empty_participant_list));
         }
 
         if (!error) {

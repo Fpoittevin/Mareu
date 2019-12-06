@@ -1,10 +1,10 @@
 package com.ocr.francois.mareu.ui.MeetingDetails;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.di.DI;
@@ -15,11 +15,10 @@ import butterknife.ButterKnife;
 
 public class MeetingDetailsActivity extends AppCompatActivity {
 
-    private MeetingDetailsFragment meetingDetailsFragment;
-    private Meeting meeting;
-
     @BindView(R.id.activity_meeting_details_toolbar)
     Toolbar toolbar;
+    private MeetingDetailsFragment meetingDetailsFragment;
+    private Meeting meeting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

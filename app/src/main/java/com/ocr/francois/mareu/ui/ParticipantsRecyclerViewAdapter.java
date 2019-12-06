@@ -18,7 +18,7 @@ import butterknife.ButterKnife;
 
 public class ParticipantsRecyclerViewAdapter extends RecyclerView.Adapter<ParticipantsRecyclerViewAdapter.ViewHolder> {
 
-    List<String> participants;
+    private List<String> participants;
 
     public ParticipantsRecyclerViewAdapter(List<String> participants) {
         this.participants = participants;
@@ -49,7 +49,7 @@ public class ParticipantsRecyclerViewAdapter extends RecyclerView.Adapter<Partic
         @BindView(R.id.fragment_list_participant_item_email_text_view)
         public TextView email;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }

@@ -8,8 +8,6 @@ import java.util.List;
 
 public class MeetingsSorter {
 
-    public enum SortParam {MEETINGROOM, DATETIMESTART}
-
     static public void sortMeetings(List<Meeting> meetings, final SortParam sortParam) {
 
         Collections.sort(meetings, new Comparator<Meeting>() {
@@ -23,12 +21,10 @@ public class MeetingsSorter {
                         comparison = meeting1.getMeetingRoom().compareTo(meeting2.getMeetingRoom());
                         break;
                     case DATETIMESTART:
-                        if(meeting1.getDateTimeStart().isBefore(meeting2.getDateTimeStart())) {
+                        if (meeting1.getDateTimeStart().isBefore(meeting2.getDateTimeStart())) {
                             comparison = -1;
-                        } else if(meeting1.getDateTimeStart().isAfter(meeting2.getDateTimeStart())) {
+                        } else if (meeting1.getDateTimeStart().isAfter(meeting2.getDateTimeStart())) {
                             comparison = 1;
-                        } else {
-                            comparison = 0;
                         }
                         break;
                 }
@@ -36,4 +32,6 @@ public class MeetingsSorter {
             }
         });
     }
+
+    public enum SortParam {MEETINGROOM, DATETIMESTART}
 }

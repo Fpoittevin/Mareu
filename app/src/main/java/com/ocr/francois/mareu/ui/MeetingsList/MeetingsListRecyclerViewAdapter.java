@@ -28,20 +28,13 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
     private FragmentCallback fragment;
     private ActivityCallback activity;
 
-    public interface ActivityCallback {
-        void onItemClick(Meeting item);
-    }
-    public interface FragmentCallback {
-        void onItemDelete(Meeting item);
-    }
-
-    public MeetingsListRecyclerViewAdapter(List<Meeting> meetings, Context context, Fragment fragment) {
+    MeetingsListRecyclerViewAdapter(List<Meeting> meetings, Context context, Fragment fragment) {
         this.meetings = meetings;
         this.context = context;
-        if(context instanceof ActivityCallback) {
+        if (context instanceof ActivityCallback) {
             this.activity = (ActivityCallback) context;
         }
-        if(fragment instanceof FragmentCallback) {
+        if (fragment instanceof FragmentCallback) {
             this.fragment = (FragmentCallback) fragment;
         }
 
@@ -66,10 +59,10 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
                 + meeting.getSubject();
 
         String participantsListInString = "";
-        for(int i = 0; i < meeting.getParticipants().size(); i++) {
+        for (int i = 0; i < meeting.getParticipants().size(); i++) {
             participantsListInString = participantsListInString + meeting.getParticipants().get(i);
 
-            if(i != meeting.getParticipants().size() - 1) {
+            if (i != meeting.getParticipants().size() - 1) {
                 participantsListInString = participantsListInString + ", ";
             }
         }
@@ -99,7 +92,19 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
         return meetings.size();
     }
 
-    public class MeetingViewHolder extends RecyclerView.ViewHolder {
+    public List<Meeting> getMeetings() {
+        return meetings;
+    }
+
+    public interface ActivityCallback {
+        void onItemClick(Meeting item);
+    }
+
+    public interface FragmentCallback {
+        void onItemDelete(Meeting item);
+    }
+
+    class MeetingViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.fragment_list_meeting_item_circle_image_view)
         ImageView circleColor;
@@ -110,14 +115,10 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
         @BindView(R.id.fragment_list_meeting_item_delete_button)
         ImageButton deleteButton;
 
-        public MeetingViewHolder(@NonNull View itemView) {
+        MeetingViewHolder(@NonNull View itemView) {
 
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
-    }
-
-    public List<Meeting> getMeetings() {
-        return meetings;
     }
 }

@@ -14,16 +14,16 @@ public class FakeMeetingApiService implements MeetingApiService {
     private List<Meeting> meetings = FakeMeetingGenerator.generateMeetings();
 
     @Override
-    public List<Meeting> getMeetings(){
+    public List<Meeting> getMeetings() {
         return meetings;
-    };
+    }
 
     @Override
     public Meeting getMeeting(int id) {
         Meeting meeting = null;
 
         for (int i = 0; i < meetings.size(); i++) {
-            if(meetings.get(i).getId() == id) {
+            if (meetings.get(i).getId() == id) {
                 meeting = meetings.get(i);
                 break;
             }
@@ -49,11 +49,11 @@ public class FakeMeetingApiService implements MeetingApiService {
     public List getFreeMeetingRooms(LocalDate date, LocalTime timeStart, LocalTime timeStop) {
         List<MeetingRoom> freeMeetingRooms = new ArrayList<>(Arrays.asList(MeetingRoom.values()));
 
-        for(int i = 0; i < meetings.size(); i++) {
+        for (int i = 0; i < meetings.size(); i++) {
             Meeting meeting = getMeetings().get(i);
 
-            if(meeting.getDate().equals(date)) {
-                if(!meeting.getTimeStop().isBefore(meeting.getTimeStart()) ||
+            if (meeting.getDate().equals(date)) {
+                if (!meeting.getTimeStop().isBefore(meeting.getTimeStart()) ||
                         !meeting.getTimeStop().equals(meeting.getTimeStart()) ||
                         !meeting.getTimeStart().isAfter(meeting.getTimeStop()) ||
                         !meeting.getTimeStart().equals(meeting.getTimeStop())) {

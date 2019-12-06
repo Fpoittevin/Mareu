@@ -1,15 +1,14 @@
 package com.ocr.francois.mareu.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.FragmentManager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ocr.francois.mareu.R;
@@ -28,12 +27,11 @@ import static com.ocr.francois.mareu.service.MeetingsSorter.SortParam.MEETINGROO
 
 public class MainActivity extends AppCompatActivity implements MeetingsListRecyclerViewAdapter.ActivityCallback {
 
+    public MeetingsListFragment meetingsListFragment;
     @BindView(R.id.activity_main_toolbar)
     Toolbar toolbar;
     @BindView(R.id.activity_main_creation_fab)
     FloatingActionButton creationFab;
-
-    public MeetingsListFragment meetingsListFragment;
     MeetingDetailsFragment meetingDetailsFragment;
     FragmentManager fragmentManager;
 
@@ -62,12 +60,12 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
     public void onItemClick(Meeting meeting) {
 
 
-        if(findViewById(R.id.activity_main_details_frame) == null) {
+        if (findViewById(R.id.activity_main_details_frame) == null) {
             Intent meetingDetailsIntent = new Intent(MainActivity.this, MeetingDetailsActivity.class);
             meetingDetailsIntent.putExtra("meetingId", meeting.getId());
             startActivity(meetingDetailsIntent);
         } else {
-            if(findViewById(R.id.activity_main_selection_layout) != null){
+            if (findViewById(R.id.activity_main_selection_layout) != null) {
                 findViewById(R.id.activity_main_selection_layout).setVisibility(View.GONE);
             }
             meetingDetailsFragment = MeetingDetailsFragment.newInstance();
@@ -82,8 +80,9 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
     private void configureToolBar() {
         setSupportActionBar(toolbar);
     }
+
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_meetings_list, menu);
         return true;
     }

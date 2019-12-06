@@ -71,10 +71,6 @@ public class Meeting {
         return participants;
     }
 
-    public void setParticipants(List<String> participants) {
-        this.participants = participants;
-    }
-
     public LocalDate getDate() {
         return date;
     }
@@ -99,7 +95,7 @@ public class Meeting {
         this.timeStop = timeStop;
     }
 
-    public void setDateTimeStart() {
+    private void setDateTimeStart() {
         dateTimeStart = new LocalDateTime(
                 date.getYear(),
                 date.getMonthOfYear(),
@@ -110,7 +106,7 @@ public class Meeting {
     }
 
     public LocalDateTime getDateTimeStart() {
-        if(this.dateTimeStart == null) {
+        if (this.dateTimeStart == null) {
             setDateTimeStart();
         }
         return dateTimeStart;

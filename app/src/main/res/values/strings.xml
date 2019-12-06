@@ -4,6 +4,7 @@
     <string name="time_pattern">HH:mm</string>
     <string name="date_pattern">dd/MM/yy</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    //MEETING CREATION
+    <string name="error_subject_text_input">Veuillez indiquer le sujet de la réunion</string>
+    <string name="error_empty_participant_list">Veuillez indiquer au moins un participant</string>
 </resources>
