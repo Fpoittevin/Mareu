@@ -3,8 +3,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <item
-        android:id="@+id/menu_meetings_list_sort"
+        android:id="@+id/menu_meetings_list"
         android:icon="@drawable/ic_filter_list_white_24dp"
         app:showAsAction="ifRoom"
-        android:title="trier" />
+        android:title="@string/sorter_and_filter_menu_button">
+    <menu>
+        <item
+            android:id="@+id/menu_meetings_list_sort_by_dates"
+            android:title="@string/sort_by_dates_button"
+            app:showAsAction="never|withText" />
+        <item
+            android:id="@+id/menu_meetings_list_sort_by_room"
+            android:title="@string/sort_by_room_button"
+            app:showAsAction="never|withText" />
+        <item
+            android:id="@+id/menu_meetings_list_filter_by_date"
+            android:title="@string/filter_by_date_button"
+            app:showAsAction="never|withText" />
+        <item
+            android:id="@+id/menu_meetings_list_filter_by_room"
+            android:title="@string/filter_by_room_button"
+            app:showAsAction="never|withText" />
+        <item
+            android:id="@+id/menu_meetings_list_all"
+            android:title="@string/show_all_meetings_button"
+            app:showAsAction="never|withText" />
+    </menu>
+    </item>
 </menu>

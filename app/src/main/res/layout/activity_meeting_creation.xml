@@ -4,22 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MeetingCreation.MeetingCreationActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".ui.MeetingCreation.MeetingCreationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <androidx.appcompat.widget.Toolbar
+            android:id="@+id/activity_meeting_creation_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:titleTextColor="@android:color/white"
             android:background="?attr/colorPrimary"
-            android:id="@+id/activity_meeting_creation_toolbar"/>
+            app:titleTextColor="@android:color/white" />
     </com.google.android.material.appbar.AppBarLayout>
+
     <FrameLayout
+        android:id="@+id/activity_meeting_creation_frame_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/activity_meeting_creation_frame_layout"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

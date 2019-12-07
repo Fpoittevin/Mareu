@@ -19,6 +19,32 @@ public class FakeMeetingApiService implements MeetingApiService {
     }
 
     @Override
+    public List<Meeting> getMeetingsByDate(LocalDate date) {
+        List<Meeting> meetingsByDate = new ArrayList();
+
+        for (int i = 0; i < meetings.size(); i++) {
+            Meeting meeting = meetings.get(i);
+            if (meeting.getDate().equals(date)) {
+                meetingsByDate.add(meeting);
+            }
+        }
+        return meetingsByDate;
+    }
+
+    @Override
+    public List<Meeting> getMeetingsByMeetingRoom(MeetingRoom meetingRoom) {
+        List<Meeting> meetingsByMeetingRoom = new ArrayList();
+
+        for (int i = 0; i < meetings.size(); i++) {
+            Meeting meeting = meetings.get(i);
+            if (meeting.getMeetingRoom().equals(meetingRoom)) {
+                meetingsByMeetingRoom.add(meeting);
+            }
+        }
+        return meetingsByMeetingRoom;
+    }
+
+    @Override
     public Meeting getMeeting(int id) {
         Meeting meeting = null;
 
@@ -34,9 +60,12 @@ public class FakeMeetingApiService implements MeetingApiService {
 
     @Override
     public void addMeeting(Meeting meeting) {
-        int id = meetings.get(meetings.size() - 1).getId() + 1;
-        meeting.setId(id);
 
+        int id = 1;
+        if (!meetings.isEmpty()) {
+            id = meetings.get(meetings.size() - 1).getId() + 1;
+        }
+        meeting.setId(id);
         meetings.add(meeting);
     }
 
@@ -62,7 +91,6 @@ public class FakeMeetingApiService implements MeetingApiService {
                 }
             }
         }
-
         return freeMeetingRooms;
     }
 }

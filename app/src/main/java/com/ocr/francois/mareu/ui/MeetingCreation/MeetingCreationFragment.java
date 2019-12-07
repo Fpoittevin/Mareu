@@ -34,7 +34,6 @@ import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -168,9 +167,6 @@ public class MeetingCreationFragment extends Fragment {
     }
 
     private void configureDateButton() {
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(meeting.getDate().toDate());
 
         final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override

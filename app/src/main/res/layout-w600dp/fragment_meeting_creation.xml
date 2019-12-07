@@ -1,171 +1,169 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
-
-
-    <LinearLayout
-        android:layout_width="0px"
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="50"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:orientation="horizontal">
 
-        <!-- INFOS -->
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="20dp">
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <LinearLayout
+            <!-- INFOS -->
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Infos"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp"/>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="sujet de la réunion">
-
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/fragment_meeting_creation_subject_edit_text"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/fragment_meeting_creation_date_button"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="date"
-                        app:icon="@drawable/ic_date_range_black_24dp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/fragment_meeting_creation_time_start_button"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="heure de début"
-                        app:icon="@drawable/ic_access_time_black_24dp" />
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/fragment_meeting_creation_time_stop_button"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="heure de fin"
-                        app:icon="@drawable/ic_access_time_black_24dp" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- MEETING ROOM -->
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Salle de réunion"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp"/>
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="20dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/fragment_meeting_creation_meeting_room_spinner"
-                        style="@style/Widget.AppCompat.Spinner.Underlined"
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:spinnerMode="dialog"></Spinner>
+                        android:background="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:text="@string/infos_title"
+                        android:textColor="@android:color/white" />
 
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0px"
-        android:layout_height="match_parent"
-        android:layout_weight="50"
-        android:orientation="vertical"
-        android:padding="20dp">
-
-        <!-- PARTICIPANTS -->
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_marginRight="2dp"
-            android:layout_marginBottom="20dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Participants"
-                    android:background="@color/colorPrimary"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
 
                         <com.google.android.material.textfield.TextInputLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="participants">
+                            android:hint="@string/hint_subject_input">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/fragment_meeting_creation_subject_edit_text"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/fragment_meeting_creation_date_button"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_date_range_black_24dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/fragment_meeting_creation_time_start_button"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_access_time_black_24dp" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/fragment_meeting_creation_time_stop_button"
+                            style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:icon="@drawable/ic_access_time_black_24dp" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- MEETING ROOM -->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:text="@string/meeting_room_title"
+                        android:textColor="@android:color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <Spinner
+                            android:id="@+id/fragment_meeting_creation_meeting_room_spinner"
+                            style="@style/Widget.AppCompat.Spinner.Underlined"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:spinnerMode="dialog"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <!-- PARTICIPANTS -->
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_marginBottom="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorPrimary"
+                        android:padding="10dp"
+                        android:text="@string/participants_title"
+                        android:textColor="@android:color/white" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/participants_title">
 
                             <com.google.android.material.textfield.TextInputEditText
                                 android:id="@+id/fragment_meeting_creation_add_participant_edit_text"
@@ -177,26 +175,23 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/fragment_meeting_creation_add_participant_button"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="ajouter"
                             android:layout_gravity="right"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            app:icon="@drawable/ic_add_white_24dp"/>
+                            android:text="@string/add_button"
+                            app:icon="@drawable/ic_add_white_24dp" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/fragment_meeting_creation_participants_recycler_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/fragment_meeting_creation_participants_recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
                 </LinearLayout>
 
-            </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-        </androidx.cardview.widget.CardView>
-
+        </LinearLayout>
     </LinearLayout>
-
-
-
-</LinearLayout>
 </ScrollView>

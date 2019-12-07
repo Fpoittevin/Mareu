@@ -1,13 +1,16 @@
 package com.ocr.francois.mareu;
 
 import android.view.View;
+import android.widget.DatePicker;
 
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.test.espresso.contrib.PickerActions;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.rule.ActivityTestRule;
 
+import com.ocr.francois.mareu.di.DI;
 import com.ocr.francois.mareu.model.Meeting;
 import com.ocr.francois.mareu.service.MeetingsSorter;
 import com.ocr.francois.mareu.ui.MainActivity;
@@ -16,7 +19,9 @@ import com.ocr.francois.mareu.utils.DeleteViewAction;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
+import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -30,8 +35,12 @@ import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.assertThat;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withSubstring;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.ocr.francois.mareu.utils.RecyclerViewItemCountAssertion.withItemCount;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -87,13 +96,13 @@ public class MeetingsListTest {
 
     @Test
     public void myNeighboursList_deleteAction_shouldRemoveItem() {
+
         RecyclerView recyclerView = activity.findViewById(R.id.fragment_meetings_list_recycler_view);
         int numberOfItems = recyclerView.getAdapter().getItemCount();
 
-        // When perform a click on a delete icon
         onView(ViewMatchers.withId(R.id.fragment_meetings_list_recycler_view))
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()));
-        // Then : the number of element is 11
+
         onView(ViewMatchers.withId(R.id.fragment_meetings_list_recycler_view)).check(withItemCount(numberOfItems - 1));
     }
 
@@ -106,6 +115,9 @@ public class MeetingsListTest {
 
     @Test
     public void meetingsList_clickCreationFab_shouldStartMeetingCreationActivityAndCreateNewMeeting() {
+
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("toutes les réunions")).perform(click());
 
         RecyclerView recyclerView = activity.findViewById(R.id.fragment_meetings_list_recycler_view);
         int numberOfItems = recyclerView.getAdapter().getItemCount();
@@ -124,18 +136,57 @@ public class MeetingsListTest {
     }
 
     @Test
-    public void meetingsList_clickSortButton_shouldSortItemsByDateTime() {
-        activity.meetingsListFragment.sortParam = MeetingsSorter.SortParam.MEETINGROOM;
+    public void meetingsList_clickSortByDatesButton_shouldSortItemsByDateTime() {
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("trier par dates")).perform(click());
 
-        onView(withId(R.id.menu_meetings_list_sort)).perform(click());
         onView(withId(R.id.fragment_meetings_list_recycler_view)).check(matches(isSorted(MeetingsSorter.SortParam.DATETIMESTART)));
     }
 
     @Test
-    public void meetingsList_clickSortButton_shouldSortItemsByMeetingRoom() {
-        activity.meetingsListFragment.sortParam = MeetingsSorter.SortParam.DATETIMESTART;
+    public void meetingsList_clickSortByMeetingsButton_shouldSortItemsByMeetingRoom() {
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("trier par salles")).perform(click());
 
-        onView(withId(R.id.menu_meetings_list_sort)).perform(click());
         onView(withId(R.id.fragment_meetings_list_recycler_view)).check(matches(isSorted(MeetingsSorter.SortParam.MEETINGROOM)));
+    }
+
+    @Test
+    public void meetingsList_clickFilterByMeetingRooms_shouldFilterItemsByMeetingRoom() {
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("filtrer par salle")).perform(click());
+        onView(withText("Réunion A")).perform(click());
+
+        onView(withId(R.id.fragment_meetings_list_recycler_view))
+                .check(matches(hasDescendant(withSubstring("Réunion A"))));
+    }
+
+    @Test
+    public void meetingsList_clickFilterByDate_shouldFilterItemsByDate() {
+
+        LocalDate date = new LocalDate(2019, 12, 10);
+
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("filtrer par date")).perform(click());
+        onView(withClassName(Matchers.equalTo(DatePicker.class.getName()))).perform(PickerActions.setDate(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth()));
+        onView(withText("OK")).perform(click());
+
+        onView(withId(R.id.fragment_meetings_list_recycler_view))
+                .check(matches(hasDescendant(withSubstring(date.toString(activity.getString(R.string.date_pattern))))));
+
+    }
+
+    @Test
+    public void meetingsList_clickDisplayAllMeetings_shouldDisplayAllMeetings() {
+        int numberOfMeetings = DI.getMeetingApiService().getMeetings().size();
+
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("filtrer par salle")).perform(click());
+        onView(withText("Réunion A")).perform(click());
+
+        onView(withId(R.id.menu_meetings_list)).perform(click());
+        onView(withText("toutes les réunions")).perform(click());
+
+        onView(ViewMatchers.withId(R.id.fragment_meetings_list_recycler_view)).check(withItemCount(numberOfMeetings));
     }
 }

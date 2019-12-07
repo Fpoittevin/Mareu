@@ -14,13 +14,16 @@ import com.ocr.francois.mareu.R;
 import com.ocr.francois.mareu.di.DI;
 import com.ocr.francois.mareu.event.NewMeetingEvent;
 import com.ocr.francois.mareu.model.Meeting;
+import com.ocr.francois.mareu.model.MeetingRoom;
 import com.ocr.francois.mareu.service.MeetingApiService;
 import com.ocr.francois.mareu.service.MeetingsSorter;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.joda.time.LocalDate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,7 +51,9 @@ public class MeetingsListFragment extends Fragment implements MeetingsListRecycl
         super.onCreate(savedInstanceState);
 
         meetingApiService = DI.getMeetingApiService();
-        meetings = meetingApiService.getMeetings();
+
+        meetings = new ArrayList();
+        meetings.addAll(meetingApiService.getMeetings());
         sortParam = MeetingsSorter.SortParam.MEETINGROOM;
     }
 
@@ -70,14 +75,33 @@ public class MeetingsListFragment extends Fragment implements MeetingsListRecycl
         recyclerView.setAdapter(meetingsListRecyclerViewAdapter);
     }
 
-    public void updateMeetingsList() {
+    public void sortMeetings(MeetingsSorter.SortParam sortParam) {
         MeetingsSorter.sortMeetings(meetings, sortParam);
+        meetingsListRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    public void displayAllMeetings() {
+        meetings.clear();
+        meetings.addAll(meetingApiService.getMeetings());
+        meetingsListRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    public void displayMeetingsByDate(LocalDate date) {
+        meetings.clear();
+        meetings.addAll(meetingApiService.getMeetingsByDate(date));
+        meetingsListRecyclerViewAdapter.notifyDataSetChanged();
+    }
+
+    public void displayMeetingsByMeetingRoom(MeetingRoom meetingRoom) {
+        meetings.clear();
+        meetings.addAll(meetingApiService.getMeetingsByMeetingRoom(meetingRoom));
         meetingsListRecyclerViewAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onItemDelete(Meeting meeting) {
         meetingApiService.deleteMeeting(meeting);
+        meetings.remove(meeting);
         meetingsListRecyclerViewAdapter.notifyDataSetChanged();
     }
 
@@ -95,6 +119,6 @@ public class MeetingsListFragment extends Fragment implements MeetingsListRecycl
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onCreateMeeting(NewMeetingEvent event) {
-        updateMeetingsList();
+        displayAllMeetings();
     }
 }

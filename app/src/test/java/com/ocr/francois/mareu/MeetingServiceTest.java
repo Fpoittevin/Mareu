@@ -29,7 +29,6 @@ public class MeetingServiceTest {
     public void addMeetingWithSuccess() {
 
         Meeting meeting = generateNewMeeting();
-
         assertTrue(meetingApiService.getMeetings().contains(meeting));
     }
 
@@ -38,22 +37,21 @@ public class MeetingServiceTest {
 
         Meeting meeting = generateNewMeeting();
         meetingApiService.deleteMeeting(meeting);
-
         assertFalse(meetingApiService.getMeetings().contains(meeting));
     }
 
     @Test
     public void getMeetingWithSuccess() {
-        Meeting meeting = generateNewMeeting();
 
+        Meeting meeting = generateNewMeeting();
         assertEquals(meeting, meetingApiService.getMeeting(meeting.getId()));
     }
 
     @Test
     public void getFreeMeetingRoomWithSuccess() {
-        Meeting meeting = generateNewMeeting();
 
-        assertFalse(meetingApiService.getFreeMeetingRooms(meeting.getDate(),meeting.getTimeStart(),meeting.getTimeStop()).contains(meeting.getMeetingRoom()));
+        Meeting meeting = generateNewMeeting();
+        assertFalse(meetingApiService.getFreeMeetingRooms(meeting.getDate(), meeting.getTimeStart(), meeting.getTimeStop()).contains(meeting.getMeetingRoom()));
     }
 
     private Meeting generateNewMeeting() {

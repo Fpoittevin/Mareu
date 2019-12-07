@@ -49,7 +49,6 @@ public class MeetingCreationActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_meeting_creation, menu);
-
         return true;
     }
 

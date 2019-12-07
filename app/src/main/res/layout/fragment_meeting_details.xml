@@ -2,13 +2,11 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fragment_meeting_details"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    tools:context=".ui.MeetingDetails.MeetingDetailsFragment"
-    android:id="@+id/fragment_meeting_details">
-
+    tools:context=".ui.MeetingDetails.MeetingDetailsFragment">
 
 
     <LinearLayout
@@ -34,10 +32,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Infos"
                     android:background="@color/colorPrimary"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:text="@string/infos_title"
+                    android:textColor="@android:color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -46,31 +44,31 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:id="@+id/fragment_meeting_details_subject_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fragment_meeting_details_subject_txt"
                         android:drawableLeft="@drawable/ic_chat_bubble_outline_black_24dp"
                         android:drawablePadding="5dp"
-                        android:padding="10dp"
-                        android:drawableTint="@color/colorAccent"/>
+                        android:drawableTint="@color/colorAccent"
+                        android:padding="10dp" />
 
                     <TextView
+                        android:id="@+id/fragment_meeting_details_date_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fragment_meeting_details_date_text"
                         android:drawableLeft="@drawable/ic_date_range_black_24dp"
                         android:drawablePadding="5dp"
-                        android:padding="10dp"
-                        android:drawableTint="@color/colorAccent"/>
+                        android:drawableTint="@color/colorAccent"
+                        android:padding="10dp" />
 
                     <TextView
+                        android:id="@+id/fragment_meeting_details_time_text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fragment_meeting_details_time_text"
                         android:drawableLeft="@drawable/ic_access_time_black_24dp"
                         android:drawablePadding="5dp"
-                        android:padding="10dp"
-                        android:drawableTint="@color/colorAccent"/>
+                        android:drawableTint="@color/colorAccent"
+                        android:padding="10dp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -90,10 +88,10 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Salle de réunion"
                     android:background="@color/colorPrimary"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:text="@string/meeting_room_title"
+                    android:textColor="@android:color/white" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,13 +100,13 @@
                     android:padding="10dp">
 
                     <TextView
+                        android:id="@+id/fragment_meeting_details_room_txt"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/fragment_meeting_details_room_txt"
-                        android:padding="10dp"
                         android:drawableLeft="@drawable/ic_location_on_black_24dp"
                         android:drawablePadding="5dp"
-                        android:drawableTint="@color/colorAccent"/>
+                        android:drawableTint="@color/colorAccent"
+                        android:padding="10dp" />
                 </LinearLayout>
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -130,15 +128,16 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Participants"
                     android:background="@color/colorPrimary"
-                    android:textColor="@android:color/white"
-                    android:padding="10dp"/>
+                    android:padding="10dp"
+                    android:text="@string/participants_title"
+                    android:textColor="@android:color/white" />
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/fragment_meeting_details_participants_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/fragment_meeting_details_participants_recycler_view"
-                    android:padding="10dp"/>
+                    android:padding="10dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </LinearLayout>

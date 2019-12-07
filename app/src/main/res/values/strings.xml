@@ -7,4 +7,21 @@
     //MEETING CREATION
     <string name="error_subject_text_input">Veuillez indiquer le sujet de la réunion</string>
     <string name="error_empty_participant_list">Veuillez indiquer au moins un participant</string>
+    <string name="back_button_title">back</string>
+    <string name="infos_title">infos</string>
+    <string name="hint_subject_input">sujet de la réunion</string>
+    <string name="meeting_room_title">salle de réunion</string>
+    <string name="participants_title">participants</string>
+    <string name="add_button">ajouter</string>
+
+    //MEETING DETAILS
+    <string name="selection_for_details_text">Sélectionnez une réunion dans la liste pour afficher les détails</string>
+
+    //SORTER AND FILTER MENU
+    <string name="sorter_and_filter_menu_button">trier</string>
+    <string name="sort_by_dates_button">trier par dates</string>
+    <string name="sort_by_room_button">trier par salles</string>
+    <string name="filter_by_date_button">filtrer par date</string>
+    <string name="filter_by_room_button">filtrer par salle</string>
+    <string name="show_all_meetings_button">toutes les réunions</string>
 </resources>
