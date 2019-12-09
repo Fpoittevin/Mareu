@@ -26,7 +26,7 @@ import static java.lang.String.valueOf;
 public class MeetingDetailsFragment extends Fragment {
 
     private MeetingApiService meetingApiService;
-    private Meeting meeting;
+    public Meeting meeting;
 
     @BindView(R.id.fragment_meeting_details_subject_txt)
     TextView subject;

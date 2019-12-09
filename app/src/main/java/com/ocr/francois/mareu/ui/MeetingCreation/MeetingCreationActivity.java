@@ -30,8 +30,13 @@ public class MeetingCreationActivity extends AppCompatActivity {
         configureToolBar();
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        meetingCreationFragment = MeetingCreationFragment.newInstance();
-        fragmentManager.beginTransaction().add(R.id.activity_meeting_creation_frame_layout, meetingCreationFragment).commit();
+
+        meetingCreationFragment = (MeetingCreationFragment) fragmentManager.findFragmentById(R.id.meeting_creation_fragment);
+
+        if (meetingCreationFragment == null) {
+            meetingCreationFragment = MeetingCreationFragment.newInstance();
+            fragmentManager.beginTransaction().add(R.id.activity_meeting_creation_frame_layout, meetingCreationFragment).commit();
+        }
     }
 
     private void configureToolBar() {

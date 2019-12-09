@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MeetingCreation.MeetingCreationFragment">
+    tools:context=".ui.MeetingCreation.MeetingCreationFragment"
+    android:id="@+id/meeting_creation_fragment">
 
     <LinearLayout
         android:layout_width="match_parent"

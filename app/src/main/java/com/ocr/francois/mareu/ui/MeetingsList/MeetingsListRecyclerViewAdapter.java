@@ -83,6 +83,7 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
             @Override
             public void onClick(View view) {
                 fragment.onItemDelete(meeting);
+                activity.onItemDelete(meeting);
             }
         });
     }
@@ -98,6 +99,7 @@ public class MeetingsListRecyclerViewAdapter extends RecyclerView.Adapter<Meetin
 
     public interface ActivityCallback {
         void onItemClick(Meeting item);
+        void onItemDelete(Meeting item);
     }
 
     public interface FragmentCallback {

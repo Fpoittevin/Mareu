@@ -10,9 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -56,9 +58,14 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
         configureDialogs();
 
         fragmentManager = getSupportFragmentManager();
-        meetingsListFragment = MeetingsListFragment.newInstance();
-        fragmentManager.beginTransaction().add(R.id.activity_main_frame_layout_main, meetingsListFragment).commit();
 
+        if(savedInstanceState == null) {
+            meetingsListFragment = (MeetingsListFragment) fragmentManager.findFragmentById(R.id.fragment_meetings_list);
+            if (meetingsListFragment == null) {
+                meetingsListFragment = MeetingsListFragment.newInstance();
+                fragmentManager.beginTransaction().add(R.id.activity_main_frame_layout_main, meetingsListFragment).commit();
+            }
+        }
         creationFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -66,6 +73,14 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
                 startActivity(meetingCreationIntent);
             }
         });
+    }
+
+
+    @Override
+    public void onAttachFragment(Fragment fragment){
+        if(fragment instanceof MeetingsListFragment) {
+            this.meetingsListFragment = (MeetingsListFragment) fragment;
+        }
     }
 
     @Override
@@ -85,6 +100,13 @@ public class MainActivity extends AppCompatActivity implements MeetingsListRecyc
             bundle.putInt("meetingId", meeting.getId());
             meetingDetailsFragment.setArguments(bundle);
             fragmentManager.beginTransaction().replace(R.id.activity_main_details_frame, meetingDetailsFragment).commit();
+        }
+    }
+
+    @Override
+    public void onItemDelete(Meeting meeting) {
+        if(meetingDetailsFragment != null && meeting.equals(meetingDetailsFragment.meeting)) {
+            getSupportFragmentManager().beginTransaction().remove(meetingDetailsFragment).commit();
         }
     }
 
