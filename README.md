@@ -7,8 +7,8 @@ MaReu is an application for managing meeting rooms and schedules.
 
 * Clone or Download the project from https://github.com/Fpoittevin/Mareu.git
 
-    cd yourFolder
-		git clone https://github.com/Fpoittevin/Mareu.git
+    	cd yourFolder
+    	git clone https://github.com/Fpoittevin/Mareu.git
     
 * In Android Studio, click on File / Open, and select your project folder
 * In the toolbar, select "app", next select a device or an emulator, and click on the Run button
