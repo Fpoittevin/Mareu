@@ -3,6 +3,10 @@
 ## Presentation
 MaReu is an application for managing meeting rooms and schedules.
 
+## Requirements
+
+This application run on the API 21 or more.
+
 ## Installation
 
 * Clone or Download the project from https://github.com/Fpoittevin/Mareu.git
