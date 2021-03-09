@@ -20,3 +20,5 @@ MaReu is an application for managing meeting rooms and schedules.
   * [ButterKnife](https://jakewharton.github.io/butterknife/)
   * [EventBus](https://github.com/greenrobot/EventBus)
   * [Material Design](https://material.io/)
+  * [Espresso](https://developer.android.com/training/testing/espresso/)
+  * [JUnit](https://junit.org/junit5/)
